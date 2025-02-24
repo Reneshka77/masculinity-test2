@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест на мужественность</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 10px;
+        }
+        .options label {
+            margin: 5px 0;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест на мужественность</h1>
+
+    <div id="quiz">
+        <!-- Вопросы будут добавлены с помощью JavaScript -->
+    </div>
+
+    <button onclick="showResult()">Завершить тест</button>
+
+    <div id="result" class="result"></div>
+
+    <script>
+        const questions = [
+            {
+                question: "Какой из этих инструментов вы бы использовали, чтобы починить дверь, которая скрипит?",
+                options: ["WD-40", "Молоток (просто ударь по ней!)", "Скотч (всё фиксирует!)", "Позвать тестя"],
+                answer: "WD-40"
+            },
+            {
+                question: "Что вы делаете, если увидели паука в ванной?",
+                options: ["Кричите и зовёте на помощь", "Берёте тапок и героически сражаетесь", "Накрываете его стаканом и выпускаете на улицу", "Переезжаете в другой дом"],
+                answer: "Берёте тапок и героически сражаетесь"
+            },
+            {
+                question: "Какой из этих напитков вы бы выбрали для вечера с друзьями?",
+                options: ["Коктейль «Мохито»", "Пиво", "Виски со льдом", "Молочный коктейль с трубочкой"],
+                answer: "Виски со льдом"
+            },
+            {
+                question: "Как вы реагируете, если вам говорят, что вы неправильно паркуетесь?",
+                options: ["Спокойно перепарковываетесь", "Громко объясняете, что вы всё делаете правильно", "Оставляете машину как есть и уходите", "Паркуетесь ещё хуже, чтобы доказать свою точку зрения"],
+                answer: "Громко объясняете, что вы всё делаете правильно"
+            },
+            {
+                question: "Какой фильм вы бы выбрали для просмотра с друзьями?",
+                options: ["«Девчата»", "«Безумный Макс: Дорога ярости»", "«Мальчишник в Вегасе»", "«Сумерки»"],
+                answer: "«Безумный Макс: Дорога ярости»"
+            },
+            {
+                question: "Что вы делаете, если на рыбалке ничего не клюёт?",
+                options: ["Терпеливо ждёте", "Ругаетесь на рыбу и меняете наживку", "Рассказываете байки о том, как однажды поймали огромную щуку", "Идёте в магазин за рыбой"],
+                answer: "Рассказываете байки о том, как однажды поймали огромную щуку"
+            },
+            {
+                question: "Какой из этих аксессуаров вы бы надели на свадьбу друга?",
+                options: ["Бабочку", "Классический галстук", "Шейный платок", "Ничего, вы же мужик!"],
+                answer: "Классический галстук"
+            },
+            {
+                question: "Что вы делаете, если забыли день рождения жены?",
+                options: ["Делаете вид, что это был сюрприз", "Срочно бежите за цветами и подарком", "Говорите, что это она забыла напомнить", "Уезжаете в командировку"],
+                answer: "Срочно бежите за цветами и подарком"
+            },
+            {
+                question: "Какой из этих автомобилей вы бы выбрали для поездки на природу?",
+                options: ["Ferrari", "Внедорожник", "Велосипед", "Такси"],
+                answer: "Внедорожник"
+            },
+            {
+                question: "Как вы реагируете, если вас просят помочь переставить диван?",
+                options: ["Сразу соглашаетесь", "Говорите, что у вас болит спина", "Предлагаете позвать ещё людей", "Говорите, что диван и так стоит хорошо"],
+                answer: "Сразу соглашаетесь"
+            }
+        ];
+
+        let userAnswers = [];
+
+        // Отображаем вопросы
+        const quizContainer = document.getElementById("quiz");
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement("div");
+            questionDiv.className = "question";
+            questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+
+            const optionsDiv = document.createElement("div");
+            optionsDiv.className = "options";
+
+            q.options.forEach(option => {
+                const label = document.createElement("label");
+                label.innerHTML = `<input type="radio" name="question${index}" value="${option}"> ${option}`;
+                optionsDiv.appendChild(label);
+            });
+
+            questionDiv.appendChild(optionsDiv);
+            quizContainer.appendChild(questionDiv);
+        });
+
+        // Функция для подсчёта результатов
+        function showResult() {
+            userAnswers = [];
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption) {
+                    userAnswers.push(selectedOption.value);
+                }
+            });
+
+            let correctAnswers = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === questions[index].answer) {
+                    correctAnswers++;
+                }
+            });
+
+            const resultText = `Тест завершен! Ваш результат: ${correctAnswers} из ${questions.length}`;
+            document.getElementById("result").innerText = resultText;
+
+            // Забавные итоги
+            let comment = "";
+            if (correctAnswers === questions.length) {
+                comment = "Вы — настоящий мачо! Ваша мужественность на высоте, и вы готовы к любым испытаниям.";
+            } else if (correctAnswers >= 8) {
+                comment = "Вы почти идеальный мужчина, но иногда позволяете себе слабости.";
+            } else if (correctAnswers >= 6) {
+                comment = "Ваша мужественность на среднем уровне. Вы знаете, что делать, но иногда ленитесь.";
+            } else if (correctAnswers >= 4) {
+                comment = "Вы больше романтик, чем мачо. Но это тоже неплохо!";
+            } else {
+                comment = "Вы — человек творческий и чувствительный. Мужественность? Ну, это не про вас... пока что!";
+            }
+
+            document.getElementById("result").innerText += "\n" + comment;
+        }
+    </script>
+</body>
+</html>
